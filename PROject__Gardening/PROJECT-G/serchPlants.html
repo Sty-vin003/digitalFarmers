@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Access Location</title>
+    <style>
+        /* Set height for the map div */
+        body{
+            padding: 0;
+            margin: 0;
+        }
+
+        .navi ul{
+            padding: 0px;
+            margin: 0px;
+        }
+        .navi{
+            padding: 0px;
+            margin: 0px;
+        }
+        
+        .navigation_header {
+            width: 80%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        .navigation_header a:hover{   
+            text-decoration: underline;
+            color: #2a1e63;
+        }
+        
+        
+        .login-popup{
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid #03A9F4;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            margin: 40px;
+            transition: .6s;
+        }
+        
+        .login-popup:hover{
+           background: #502999;
+        }
+        
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            width: 100%;
+        }
+        
+        header h1 {
+            text-align: center;
+            margin: 0;
+            color: #646366;
+            font-size: 4em;
+       
+        }
+        
+
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+
+        h1 {
+            color: #2a9d8f;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #searchBox {
+            width: 300px;
+            padding: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navigation_header">
+            <h1 class="web-heading">DIGITAL FARMERS ASSOCIATION</h1>
+            <hr style="border: 1px solid black; width: 100%; margin:0;">
+            <nav class="navi">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="home.html">Features</a></li>
+                    <li><a href="groupChat.html">Community</a></li>
+                    <li><a href="serchPlants.html">Resources</a></li>
+                    <li><a href="contacts.html">Contact</a></li>
+                   <a href="login.html"> <button class="login-popup">LogOut</button></a>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h1>Search a Location of Plants Nurseries</h1>
+
+    <!-- Input for location search -->
+    <input id="searchBox" type="text" placeholder="Search location...">
+
+    <!-- Div where the map will be displayed -->
+    <div id="map"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Digital Farmers. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // Create the map centered on a default location (e.g., New York)
+            const defaultLocation = { lat: 40.7128, lng: -74.0060 };
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: defaultLocation,
+            });
+
+            // Create a marker to show the searched location
+            const marker = new google.maps.Marker({
+                map: map,
+                position: defaultLocation,
+            });
+
+            // Create a search box and link it to the UI element
+            const searchBox = new google.maps.places.SearchBox(document.getElementById('searchBox'));
+
+            // Bias the SearchBox results towards current map's viewport
+            map.addListener('bounds_changed', () => {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            // Listen for the event fired when the user selects a location
+            searchBox.addListener('places_changed', () => {
+                const places = searchBox.getPlaces();
+
+                if (places.length === 0) {
+                    return;
+                }
+
+                // Clear out the old marker
+                marker.setMap(null);
+
+                // Get the place details for the selected location
+                const place = places[0];
+
+                if (!place.geometry || !place.geometry.location) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+
+                // Center the map at the new location and place the marker
+                map.setCenter(place.geometry.location);
+                marker.setPosition(place.geometry.location);
+                marker.setMap(map);
+            });
+        }
+    </script>
+
+    <!-- Google Maps JavaScript API with Places library AlzaSyJpCRG4PaTi4FM76Tmv7FIqGVMELv8l5GE -->
+    <script async defer
+        src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyJpCRG4PaTi4FM76Tmv7FIqGVMELv8l5GE&libraries=places&callback=initMap">
+    </script>
+</body>
+</html>

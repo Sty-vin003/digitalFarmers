@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="">
+</head>
+
+<style>
+    /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navi ul{
+    padding: 0px;
+    margin: 0px;
+}
+.navi{
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigation_header {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0px;
+}
+.navigation_header a:hover{   
+    text-decoration: underline;
+    color: #2a1e63;
+}
+
+
+.login-popup{
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #03A9F4;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin: 40px;
+    transition: .6s;
+}
+
+.login-popup:hover{
+   background: #502999;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding:  0;
+    width: 100%;
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+    color: #646366;
+    font-size: 4em;
+
+}
+
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+h1 {
+    color: #2a9d8f;
+}
+
+h4{
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+.contact-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.contact-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.contact-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+.contact-card p {
+    font-size: 1em;
+    color: #666;
+}
+
+.contact-card:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+</style>
+<body>
+
+
+    <header>
+        <div class="navigation_header">
+            <h1 class="web-heading">DIGITAL FARMERS ASSOCIATION</h1>
+            <hr style="border: 1px solid black; width: 100%; margin:0;">
+            <nav class="navi">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="home.html">Features</a></li>
+                    <li><a href="groupChat.html">Community</a></li>
+                    <li><a href="serchPlants.html">Resources</a></li>
+                    <li><a href="contacts.html">Contact</a></li>
+                   <a href="login.html"> <button class="login-popup">LogOut</button></a>
+                </ul>
+            </nav>
+        </div>
+
+        <h4>Reach Out Throgh Our Contacts</h4>
+    </header>
+   
+    <main>
+        <section class="contact-list">
+            <div class="contact-card">
+                <h2>Steven Njoroge Macharia</h2>
+                <p>Email: stevenmacharia2003@gmail.com</p>
+                <p>Phone:+254 0758844476</p>
+            </div>
+
+            <div class="contact-card">
+                <h2>Steven Macharia</h2>
+                <p>Email: stevmacharia03@gmail.com</p>
+                <p>Phone:+254 0770045836</p>
+            </div>
+
+            <div class="contact-card">
+                <h2>Steven Macharia</h2>
+                <p>Email: stevenjoroge799@gmail.com</p>
+                <p>Phone: +254 0758844476</p>
+            </div>
+
+            <!-- Add more contacts as needed -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Digital Farmers. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plants_to_garden_data</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f9f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            margin: 0;
+        }
+
+        .navi ul{
+            padding: 0px;
+            margin: 0px;
+        }
+        .navi{
+            padding: 0px;
+            margin: 0px;
+        }
+        
+        .navigation_header {
+            width: 80%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        .navigation_header a:hover{   
+            text-decoration: underline;
+            color: #2a1e63;
+        }
+        
+        
+        .login-popup{
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid #03A9F4;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            margin: 40px;
+            transition: .6s;
+        }
+        
+        .login-popup:hover{
+           background: #502999;
+        }
+        
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            width: 100%;
+        }
+        
+        header h1 {
+            text-align: center;
+            margin: 0;
+            color: #646366;
+            font-size: 4em;
+       
+        }
+        
+
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+
+        h1 {
+            color: #2a9d8f;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #264653;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        button {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #21867a;
+        }
+
+        .displayPlants{
+            width: 100%;
+        }
+        .displayPlants h2{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #264653;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #e2e2e2;
+        }
+
+.p{
+    background-color: #264653;
+    color: blanchedalmond;
+    font-size: 20px;
+    padding: 10px;
+    margin: 0;
+}
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navigation_header">
+            <h1 class="web-heading">DIGITAL FARMERS ASSOCIATION</h1>
+            <hr style="border: 1px solid black; width: 100%; margin:0;">
+            <nav class="navi">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="home.html">Features</a></li>
+                    <li><a href="groupChat.html">Community</a></li>
+                    <li><a href="serchPlants.html">Resources</a></li>
+                    <li><a href="contacts.html">Contact</a></li>
+                   <a href="login.html"> <button class="login-popup">LogOut</button></a>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+ <p class="p">Share your knowledge and help others grow! By adding information on the basics of growing a specific plant, you're not only expanding your own understanding but also contributing to a community of passionate gardeners. Whether it's tips on watering, sunlight needs, or soil type, your experience could be exactly what someone else needs to succeed. Together, we can cultivate a thriving network of green thumbs and inspire more people to grow healthy, sustainable plants. Let's grow together</p>
+
+    <h1>Digital Farmers: Add a Plant</h1>
+
+    <div class="form-container">
+        <form id="plantForm" method="POST" action="/plants">
+            <div class="form-group">
+                <label for="name">Plant Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description"  required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="careInstructions">Care Instructions</label>
+                <textarea id="careInstructions" name="careInstructions"  required></textarea>
+            </div>
+            <button type="submit">Add Plant</button>
+        </form>
+    </div>
+
+    <div class="displayPlants">
+        <h2>Plant Details</h2>
+        <table id="plantTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Care Instructions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data from database will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Digital Farmers. All rights reserved.</p>
+        </div>
+    </footer>
+    
+ <script >
+
+    
+         // Fetch plant data from the server and display in the table
+         fetch('/get-plants')
+         .then(response => response.json())
+         .then(data => {
+            if(data.success){
+             const tableBody = document.querySelector('#plantTable tbody');
+             data.plants.forEach(plant => {
+                 const row = document.createElement('tr');
+                 row.innerHTML = `
+                     <td>${plant.name}</td>
+                     <td>${plant.description}</td>
+                     <td>${plant.care_instructions}</td>
+                 `;
+                 tableBody.appendChild(row);
+             });
+            }else{
+                console.error('Failed to load plant data');
+            }
+         })
+         .catch(err => console.error('Error fetching plant data:', err));
+
+ </script>
+
+</body>
+</html>

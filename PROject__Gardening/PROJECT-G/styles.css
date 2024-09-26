@@ -1,0 +1,192 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /*   #f4f4f4  */
+}
+
+.navi ul{
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigation_header {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px;
+}
+.navigation_header a:hover{   
+    text-decoration: underline;
+    color: #2a1e63;
+}
+
+
+.login-popup{
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #03A9F4;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin: 40px;
+    transition: .6s;
+}
+
+.login-popup:hover{
+   background: #502999;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 0;
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hero {
+    background: url('hero-image.jpg') no-repeat center center/cover;
+    color: rgb(79, 28, 172);
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 1.2em;
+}
+
+.hero .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.section {
+    background-color: white;
+    padding: 40px 0;
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.feature {
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    flex: 1 1 calc(50% - 40px);
+    box-sizing: border-box;
+}
+.feature:hover{
+    animation: pulse 0.2s;
+}
+@keyframes pulse {
+    10%, 30% {
+        transform: scale(1.1);
+    }
+}
+
+.feature h3 {
+    margin-top: 0;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+.web-heading {
+    font-size: 4em;
+    color: #646366;
+}
+
+@media only screen and (max-width: 1315px) {
+    .web-heading{
+        font-size: 50px;
+    }
+}
+
+@media only screen and (max-width: 1031px){
+    .web-heading{
+        font-size: 40px;
+    }
+}
+
+@media only screen and (max-width: 829px){
+    .login-popup{
+        width: 90px;
+        height: 30px;
+        padding: 0;
+        margin: 0;
+    }
+    .web-heading{
+        font-size: 35px;
+    }
+
+    .navi{
+        margin-top: 15px;
+    }
+}
+
+@media only screen and (max-width: 727px){
+   header{
+    padding: 0;
+    margin: 0;
+   }
+   .web-heading{
+    margin: 0;
+   }
+   header{
+    padding: 0;
+    margin: 0;
+   }
+   
+}

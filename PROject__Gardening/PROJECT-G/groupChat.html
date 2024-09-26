@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main{
+            flex: 1;
+        }
+        .navi ul{
+            padding: 0px;
+            margin: 0px;
+        }
+        .navi{
+            padding: 0px;
+            margin: 0px;
+        }
+        
+        .navigation_header {
+            width: 80%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        .navigation_header a:hover{   
+            text-decoration: underline;
+            color: #2a1e63;
+        }
+        
+        
+        .login-popup{
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid #03A9F4;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            margin: 40px;
+            transition: .6s;
+        }
+        
+        .login-popup:hover{
+           background: #502999;
+        }
+        
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            width: 100%;
+        }
+        
+        header h1 {
+            text-align: center;
+            margin: 0;
+            color: #646366;
+            font-size: 4em;
+       
+        }
+        
+
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+
+        h1 {
+            color: #2a9d8f;
+        }
+
+        h3{
+            color: #646366;
+            background-color: #2a9d8f;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        #chat {
+            max-height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #chat p {
+            margin: 0;
+            padding: 5px;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        #messageInput {
+            width: 80%;
+            padding: 10px;
+        }
+        #sendButton {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        
+       footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        width: 100%;
+    }
+    
+    footer p {
+        margin: 0;
+    }
+
+    </style>
+</head>
+<body>
+
+   
+    <header>
+        <div class="navigation_header">
+            <h1 class="web-heading">DIGITAL FARMERS ASSOCIATION</h1>
+            <hr style="border: 1px solid black; width: 100%; margin:0;">
+            <nav class="navi">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="home.html">Features</a></li>
+                    <li><a href="groupChat.html">Community</a></li>
+                    <li><a href="serchPlants.html">Resources</a></li>
+                    <li><a href="contacts.html">Contact</a></li>
+                   <a href="login.html"> <button class="login-popup">LogOut</button></a>
+                </ul>
+            </nav>
+        </div>
+        <h3>Reaching out and connecting with others opens doors to new opportunities, ideas, and perspectives.</h3>
+    </header>
+
+    <main>
+        <h1>Group Chat</h1>
+    
+        <div id="chat"></div>
+
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendButton">Send</button>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Digital Farmers. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();  // Connect to the server
+        
+        // Get DOM elements
+        const chat = document.getElementById('chat');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        // Listen for 'chat message' events from the server
+        socket.on('chat message', (msg) => {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = msg;
+            chat.appendChild(messageElement);
+            chat.scrollTop = chat.scrollHeight;  // Scroll to the bottom
+        });
+
+        // Send a chat message when the button is clicked
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message.trim()) {
+                socket.emit('chat message', message);  // Send the message to the server
+                messageInput.value = '';  // Clear the input field
+            }
+        });
+
+        // Optionally, send message when pressing Enter key
+        messageInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
