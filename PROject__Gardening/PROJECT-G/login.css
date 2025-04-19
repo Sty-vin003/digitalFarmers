@@ -149,3 +149,7 @@ footer {
 footer p {
     margin: 0;
 }
+
+.navigation_header{
+    text-align: center;
+}

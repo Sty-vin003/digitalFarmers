@@ -71,8 +71,6 @@
        
         }
         
-
-
         nav ul {
             list-style: none;
             padding: 0;
@@ -140,6 +138,22 @@
         margin: 0;
     }
 
+    @media (max-width: 744px){
+        .web-heading{
+            font-size: 3rem;
+        }
+
+        .navi{
+            margin-top: 40px;
+        }
+    }
+
+    @media (max-width: 562px){
+        .web-heading{
+            font-size: 2rem;
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -160,12 +174,14 @@
                 </ul>
             </nav>
         </div>
+        </header>
+
         <h3>Reaching out and connecting with others opens doors to new opportunities, ideas, and perspectives.</h3>
-    </header>
+  
 
     <main>
         <h1>Group Chat</h1>
-    
+
         <div id="chat"></div>
 
         <input type="text" id="messageInput" placeholder="Type a message..." />
@@ -179,39 +195,62 @@
         </div>
     </footer>
 
-    <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();  // Connect to the server
-        
-        // Get DOM elements
-        const chat = document.getElementById('chat');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-
-        // Listen for 'chat message' events from the server
-        socket.on('chat message', (msg) => {
-            const messageElement = document.createElement('p');
-            messageElement.textContent = msg;
-            chat.appendChild(messageElement);
-            chat.scrollTop = chat.scrollHeight;  // Scroll to the bottom
-        });
-
-        // Send a chat message when the button is clicked
+        const chatDiv = document.getElementById('chat');
+    
+        // Function to display a message in the chat div
+        function displayMessage(msg) {
+          const messageElement = document.createElement('p');
+          messageElement.textContent = msg;
+          chatDiv.appendChild(messageElement);
+        }
+    
+        // Function to load all messages from the server and display them
+        function loadMessages() {
+          fetch('/chat-messages')
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Clear current messages if any
+                chatDiv.innerHTML = '';
+                data.messages.forEach(item => {
+                  displayMessage(item.message);
+                });
+              }
+            })
+            .catch(err => console.error('Error fetching messages:', err));
+        }
+    
+        // Send message when the send button is clicked
         sendButton.addEventListener('click', () => {
-            const message = messageInput.value;
-            if (message.trim()) {
-                socket.emit('chat message', message);  // Send the message to the server
-                messageInput.value = '';  // Clear the input field
-            }
+          const message = messageInput.value.trim();
+          if (message) {
+            // POST the message to the server
+            fetch('/store-message', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Append the new message to the chat div
+                displayMessage(data.message);
+                messageInput.value = ''; // Clear input field
+              } else {
+                console.error('Error storing message:', data.error);
+              }
+            })
+            .catch(err => console.error('Error:', err));
+          }
         });
-
-        // Optionally, send message when pressing Enter key
-        messageInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-    </script>
+    
+        // Load messages when the page loads
+        window.addEventListener('load', loadMessages);
+      </script>
+      
 
 </body>
 

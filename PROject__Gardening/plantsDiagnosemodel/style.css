@@ -1,0 +1,246 @@
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #2E7D32;
+    --accent-color: #8BC34A;
+    --light-color: #F1F8E9;
+    --dark-color: #1B5E20;
+    --warning-color: #FF9800;
+    --danger-color: #F44336;
+}
+
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.diagnosis-section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.input-area {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.results-area {
+    flex: 2;
+    min-width: 300px;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+select, input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.symptom-checkbox {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.symptom-checkbox:hover {
+    background-color: #f0f0f0;
+}
+
+.symptom-checkbox input {
+    width: auto;
+    margin-right: 8px;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--dark-color);
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.welcome-message {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.welcome-message h2 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.tips {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.tips h3 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.tips ul {
+    padding-left: 20px;
+}
+
+.disease-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--warning-color);
+}
+
+.disease-card h3 {
+    color: var(--danger-color);
+    margin-bottom: 10px;
+}
+
+.treatment {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.treatment h4 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #f5f5f5;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .diagnosis-section {
+        flex-direction: column;
+    }
+    
+    .input-area {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .symptoms-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+#symptom-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.symptom-suggestion {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin: 2px 0;
+}
+
+.symptom-suggestion:hover {
+    background-color: var(--light-color);
+}
+
+.symptom-suggestion input {
+    width: auto;
+    margin-right: 8px;
+}
+
+.selected-symptom {
+    background-color: var(--accent-color);
+    color: white;
+}

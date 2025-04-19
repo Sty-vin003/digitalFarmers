@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Digital Farmers</title>
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #333;
+      display: flex;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      width: 250px;
+      background: #2a3f54;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+      position: fixed;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8em;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      padding: 15px 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar ul li:hover {
+      background: #1abb9c;
+    }
+
+    .sidebar ul li a {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Main content styling */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      margin-left: 250px;
+      width: calc(100% - 250px);
+    }
+
+    header {
+      background: #fff;
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5em;
+    }
+
+    /* Dashboard cards */
+    .cards {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 200px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h3 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 1em;
+      color: #777;
+    }
+
+    /* Chart/Statistics Section */
+    .chart-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+
+    .chart-container h2 {
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    /* Table styling */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .data-table th, .data-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .data-table th {
+      background-color: #2a3f54;
+      color: white;
+      font-weight: 500;
+    }
+
+    .data-table tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-delete {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background-color: #c0392b;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+
+    /* Video container */
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .video-item {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: calc(33.333% - 20px);
+    }
+
+    .video-item video {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    .video-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    /* Hidden class */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+      <li><a href="#" onclick="showUsers()">Manage Users</a></li>
+      <li><a href="#" onclick="showPlants()">Manage Plants</a></li>
+      <li><a href="#" onclick="showChats()">Manage Chat</a></li>
+      <li><a href="#" onclick="showVideos()">Manage Videos</a></li>
+      <li><a href="#settings">Settings</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>Digital Farmers Dashboard</h1>
+      <div class="profile">
+        <img src="https://via.placeholder.com/40" alt="Admin Profile" style="border-radius:50%;">
+      </div>
+    </header>
+
+    <!-- Dashboard Overview Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3 id="totalUsers">0</h3>
+        <p>Total Users</p>
+      </div>
+      <div class="card">
+        <h3 id="totalPlants">0</h3>
+        <p>Total Plants</p>
+      </div>
+      <div class="card">
+        <h3 id="totalChats">0</h3>
+        <p>Total Chats</p>
+      </div>
+      <div class="card">
+        <h3 id="totalVideos">0</h3>
+        <p>Uploaded Videos</p>
+      </div>
+    </div>
+
+    <!-- Chart/Statistics Section -->
+    <div class="chart-container" id="dashboardChart">
+      <h2>Monthly Activity Overview</h2>
+      <canvas id="activityChart" width="400" height="200" style="background: #f4f6f9; border-radius: 8px;"></canvas>
+    </div>
+
+    <!-- Users Table -->
+    <div class="chart-container hidden" id="usersTable">
+      <h2>Manage Users</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Users will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Plants Table -->
+    <div class="chart-container hidden" id="plantsTable">
+      <h2>Manage Plants</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Care Instructions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="plantsTableBody">
+          <!-- Plants will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chats Table -->
+    <div class="chart-container hidden" id="chatsTable">
+      <h2>Manage Chat Messages</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Message</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="chatsTableBody">
+          <!-- Chat messages will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Videos Container -->
+    <div class="chart-container hidden" id="videosContainer">
+      <h2>Manage Videos</h2>
+      <div class="video-container" id="videosList">
+        <!-- Videos will be loaded here -->
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Digital Farmers. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Include Chart.js for dynamic charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Global variables
+    let activityChart;
+
+    // Function to show dashboard
+    function showDashboard() {
+      document.getElementById('dashboardChart').classList.remove('hidden');
+      document.getElementById('usersTable').classList.add('hidden');
+      document.getElementById('plantsTable').classList.add('hidden');
+      document.getElementById('chatsTable').classList.add('hidden');
+      document.getElementById('videosContainer').classList.add('hidden');
+      fetchDashboardData();
+    }
+
+    // Function to show users table
+    function showUsers() {
+      document.getElementById('dashboardChart').classList.add('hidden');
+      document.getElementById('usersTable').classList.remove('hidden');
+      document.getElementById('plantsTable').classList.add('hidden');
+      document.getElementById('chatsTable').classList.add('hidden');
+      document.getElementById('videosContainer').classList.add('hidden');
+      fetchUsers();
+    }
+
+    // Function to show plants table
+    function showPlants() {
+      document.getElementById('dashboardChart').classList.add('hidden');
+      document.getElementById('usersTable').classList.add('hidden');
+      document.getElementById('plantsTable').classList.remove('hidden');
+      document.getElementById('chatsTable').classList.add('hidden');
+      document.getElementById('videosContainer').classList.add('hidden');
+      fetchPlants();
+    }
+
+    // Function to show chats table
+    function showChats() {
+      document.getElementById('dashboardChart').classList.add('hidden');
+      document.getElementById('usersTable').classList.add('hidden');
+      document.getElementById('plantsTable').classList.add('hidden');
+      document.getElementById('chatsTable').classList.remove('hidden');
+      document.getElementById('videosContainer').classList.add('hidden');
+      fetchChats();
+    }
+
+    // Function to show videos
+    function showVideos() {
+      document.getElementById('dashboardChart').classList.add('hidden');
+      document.getElementById('usersTable').classList.add('hidden');
+      document.getElementById('plantsTable').classList.add('hidden');
+      document.getElementById('chatsTable').classList.add('hidden');
+      document.getElementById('videosContainer').classList.remove('hidden');
+      fetchVideos();
+    }
+
+    // Function to fetch dashboard data
+    function fetchDashboardData() {
+      fetch('/admin/dashboard-data')
+        .then(response => response.json())
+        .then(data => {
+          // Update cards
+          document.getElementById('totalUsers').textContent = data.totalUsers;
+          document.getElementById('totalPlants').textContent = data.totalPlants;
+          document.getElementById('totalChats').textContent = data.totalChats;
+          document.getElementById('totalVideos').textContent = data.totalVideos;
+
+          // Update chart
+          updateChart(data.chartData);
+        })
+        .catch(error => console.error('Error fetching dashboard data:', error));
+    }
+
+    // Function to update chart
+    function updateChart(chartData) {
+      const ctx = document.getElementById('activityChart').getContext('2d');
+      
+      if (activityChart) {
+        activityChart.destroy();
+      }
+      
+      activityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [{
+            label: 'User Signups',
+            data: chartData.data,
+            borderColor: '#1abb9c',
+            backgroundColor: 'rgba(26, 187, 156, 0.1)',
+            fill: true,
+            tension: 0.3,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Function to fetch users
+    function fetchUsers() {
+      fetch('/admin/users')
+        .then(response => response.json())
+        .then(users => {
+          const tableBody = document.getElementById('usersTableBody');
+          tableBody.innerHTML = '';
+          
+          users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${user.id}</td>
+              <td>${user.user_name}</td>
+              <td>${user.email}</td>
+              <td>
+                <button class="btn btn-delete" onclick="deleteUser(${user.id})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error fetching users:', error));
+    }
+
+    // Function to delete user
+    function deleteUser(userId) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        fetch(`/admin/users/${userId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('User deleted successfully');
+            fetchUsers();
+            fetchDashboardData(); // Refresh dashboard stats
+          } else {
+            alert('Error deleting user');
+          }
+        })
+        .catch(error => console.error('Error deleting user:', error));
+      }
+    }
+
+    // Function to fetch plants
+    function fetchPlants() {
+      fetch('/get-plants')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('plantsTableBody');
+          tableBody.innerHTML = '';
+          
+          data.plants.forEach(plant => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${plant.id}</td>
+              <td>${plant.name}</td>
+              <td>${plant.description}</td>
+              <td>${plant.care_instructions}</td>
+              <td>
+                <button class="btn btn-delete" onclick="deletePlant(${plant.id})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error fetching plants:', error));
+    }
+
+    // Function to delete plant
+    function deletePlant(plantId) {
+      if (confirm('Are you sure you want to delete this plant?')) {
+        fetch(`/admin/plants/${plantId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Plant deleted successfully');
+            fetchPlants();
+            fetchDashboardData(); // Refresh dashboard stats
+          } else {
+            alert('Error deleting plant');
+          }
+        })
+        .catch(error => console.error('Error deleting plant:', error));
+      }
+    }
+
+    // Function to fetch chats
+    function fetchChats() {
+      fetch('/chat-messages')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('chatsTableBody');
+          tableBody.innerHTML = '';
+          
+          data.messages.forEach(message => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${message.id}</td>
+              <td>${message.message}</td>
+              <td>${new Date(message.created_at).toLocaleString()}</td>
+              <td>
+                <button class="btn btn-delete" onclick="deleteChat(${message.id})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error fetching chats:', error));
+    }
+
+    // Function to delete chat
+    function deleteChat(chatId) {
+      if (confirm('Are you sure you want to delete this chat message?')) {
+        fetch(`/admin/chats/${chatId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Chat message deleted successfully');
+            fetchChats();
+            fetchDashboardData(); // Refresh dashboard stats
+          } else {
+            alert('Error deleting chat message');
+          }
+        })
+        .catch(error => console.error('Error deleting chat:', error));
+      }
+    }
+
+    // Function to fetch videos
+    function fetchVideos() {
+      fetch('/videos')
+        .then(response => response.json())
+        .then(data => {
+          const videosList = document.getElementById('videosList');
+          videosList.innerHTML = '';
+          
+          data.videos.forEach(video => {
+            const videoItem = document.createElement('div');
+            videoItem.className = 'video-item';
+            videoItem.innerHTML = `
+              <video controls>
+                <source src="${video}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <div class="video-actions">
+                <button class="btn btn-delete" onclick="deleteVideo('${video}')">Delete</button>
+              </div>
+            `;
+            videosList.appendChild(videoItem);
+          });
+        })
+        .catch(error => console.error('Error fetching videos:', error));
+    }
+
+    // Function to delete video
+    function deleteVideo(videoPath) {
+      if (confirm('Are you sure you want to delete this video?')) {
+        fetch(`/admin/videos`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoPath })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Video deleted successfully');
+            fetchVideos();
+            fetchDashboardData(); // Refresh dashboard stats
+          } else {
+            alert('Error deleting video');
+          }
+        })
+        .catch(error => console.error('Error deleting video:', error));
+      }
+    }
+
+    // Initialize the dashboard when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      showDashboard();
+    });
+  </script>
+</body>
+</html>

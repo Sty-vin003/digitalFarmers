@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Doctor - Disease Diagnosis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    </header>
+
+    <div class="container">
+        <header>
+            <h1> Plant Health Diagnosis </h1>
+            <p>Identify plant diseases and get treatment recommendations</p>
+        </header>
+
+        <div class="diagnosis-section">
+            <div class="input-area">
+                <div class="form-group">
+                    <label for="plant-category">Plant Category:</label>
+                    <select id="plant-category">
+                        <option value="">Select a category</option>
+                        <option value="leafy-greens">Leafy Greens</option>
+                        <option value="herbs">Herbs</option>
+                        <option value="root-vegetables">Root Vegetables</option>
+                        <option value="nightshades">Nightshades</option>
+                        <option value="fruits">Fruits</option>
+                        <option value="cereals-legumes">Cereals & Legumes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="plant-type">Plant Type:</label>
+                    <select id="plant-type">
+                        <option value="">Select a plant</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="symptom-search">Search Symptoms:</label>
+                    <input type="text" id="symptom-search" placeholder="Start typing symptoms...">
+                </div>
+                <div class="symptoms-grid" id="symptoms-container">
+                    <!-- Symptoms will appear here  -->
+                </div>
+
+                <button id="diagnose-btn">Diagnose</button>
+            </div>
+
+            <div class="results-area" id="results">
+                <div class="welcome-message">
+                    <h2>Welcome to Plant Health Diagnosis page</h2>
+                    <p>Select a plant category, specific plant, and any symptoms you've observed to get a diagnosis and treatment recommendations.</p>
+                    <div class="tips">
+                        <h3>Quick Tips:</h3>
+                        <ul>
+                            <li>Water plants at the base to prevent fungal diseases</li>
+                            <li>Ensure proper spacing for good air circulation</li>
+                            <li>Rotate crops annually to prevent soil-borne diseases</li>
+                            <li>Remove and destroy infected plant material</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Note: This tool provides general recommendations. For severe infections, consult a local agricultural expert.</p>
+        </footer>
+    </div>
+
+    <script src="scrip.js"></script>
+</body>
+</html>

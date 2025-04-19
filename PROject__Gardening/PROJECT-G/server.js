@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt'); // For hashing passwords
+const bcrypt = require('bcrypt'); 
 const session = require('express-session');
 const app = express();
 const path = require('path');
@@ -15,16 +15,15 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 
-// Middleware to parse incoming form data
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({
-    secret: 'your-secret-key', // Change to a secure secret key
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: false } 
 }));
-
 
 
 // Set up MySQL connection
@@ -41,35 +40,33 @@ db.connect((err) => {
     console.log('Connected to MySQL database.');
 });
 
-// Serve static files (for CSS or any assets)
+
 app.use(express.static(__dirname));
 
 // Middleware to protect routes (home.html)
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
-        next(); // User is authenticated, proceed to the requested page
+        next(); 
     } else {
-        res.redirect('/login'); // Redirect to login page if not authenticated
+        res.redirect('/login'); 
     }
 }
 
-// Middleware to parse JSON and form-encoded data
-app.use(express.json()); // Parse JSON payloads
-app.use(express.urlencoded({ extended: true })); // Parse form data (application/x-www-form-urlencoded)
+
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle GET request to show the form
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// Handle POST request to register user
+
 app.post('/index', async (req, res) => {
     const { name, email, password, confirm_password } = req.body;
 
-    // Validate password confirmation
     if (password !== confirm_password) {
         return res.status(400).send('Passwords do not match.');
     }
@@ -83,7 +80,6 @@ app.post('/index', async (req, res) => {
         if (err) throw err;
         console.log('User data inserted:', result);
 
-        // Send a success message or redirect to login page
         res.redirect('/login');
     });
 });
@@ -92,7 +88,6 @@ app.post('/index', async (req, res) => {
 app.post('/plants', async (req, res) => {
     const { name, description, careInstructions} = req.body;
 
-    // Log the request body to ensure data is being passed correctly
     console.log('Received plant data:', req.body);
 
     const query = "INSERT INTO plants (name, description, care_instructions) VALUES (?, ?, ?)";
@@ -143,7 +138,6 @@ app.post('/login', (req, res) => {
             // Compare hashed passwords
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (isPasswordValid) {
-                // Store user information in the session
                 req.session.user = user;
                 res.redirect('/home');
             } else {
@@ -155,18 +149,16 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Route to show home.html (restricted to logged-in users)
+// Route to show home.html 
 app.get('/home', isAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/home.html');
 });
 
 
 
-
-
 // Set storage engine
 const storage = multer.diskStorage({
-    destination: './uploads/', // Upload folder
+    destination: './uploads/', 
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)); // Generate unique filename
     }
@@ -175,7 +167,7 @@ const storage = multer.diskStorage({
 // Initialize upload variable with multer configuration
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 100000000 }, // 100MB file limit (adjust as needed)
+    limits: { fileSize: 100000000 }, 
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     }
@@ -191,7 +183,7 @@ function checkFileType(file, cb) {
     if (mimetype && extname) {
         return cb(null, true);
     } else {
-        cb('Error: Videos Only!'); // Reject non-video files
+        cb('Error: Videos Only!'); 
     }
 }
 
@@ -218,7 +210,6 @@ app.get('/videos', (req, res) => {
         if (err) {
             return res.status(500).json({ success: false, message: 'Error fetching videos' });
         }
-        // Return the list of video files
         const videos = files.map(file => `/uploads/${file}`);
         res.json({ success: true, videos });
     });
@@ -228,14 +219,9 @@ app.get('/videos', (req, res) => {
 // When a user connects to the socket
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-
-    // Listen for chat messages from the client
     socket.on('chat message', (msg) => {
-        // Broadcast the message to all connected users
         io.emit('chat message', msg);
     });
-
-    // When a user disconnects
     socket.on('disconnect', () => {
         console.log('A user disconnected:', socket.id);
     });
@@ -243,6 +229,180 @@ io.on('connection', (socket) => {
 
 // Serve uploaded files statically
 app.use('/uploads', express.static('uploads'));
+
+
+app.post('/store-message', (req, res) => {
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ success: false, error: 'Message is required.' });
+    }
+    const insertQuery = 'INSERT INTO chat_messages (message) VALUES (?)';
+    db.query(insertQuery, [message], (err, result) => {
+      if (err) {
+        console.error('Error inserting message:', err);
+        return res.status(500).json({ success: false, error: err });
+      }
+      const insertedId = result.insertId;
+      console.log('Message stored with id:', insertedId);
+  
+      // Schedule deletion after 3 days 
+      setTimeout(() => {
+        const deleteQuery = 'DELETE FROM chat_messages WHERE id = ?';
+        db.query(deleteQuery, [insertedId], (err, result) => {
+          if (err) {
+            console.error('Error deleting message with id', insertedId, ':', err);
+          } else {
+            console.log('Message with id', insertedId, 'deleted after 3 days.');
+          }
+        });
+      }, 259200000);
+  
+      res.json({ success: true, message });
+    });
+  });
+
+  app.get('/chat-messages', (req, res) => {
+    const selectQuery = 'SELECT * FROM chat_messages ORDER BY created_at ASC';
+    db.query(selectQuery, (err, results) => {
+        if (err) {
+            console.error('Error fetching chat messages:', err);
+            return res.status(500).json({ success: false, error: err });
+        }
+        res.json({ success: true, messages: results });
+    });
+});
+
+
+// Admin dashboard data
+app.get('/admin/dashboard-data', (req, res) => {
+    const getTotalUsers = new Promise((resolve) => {
+      db.query('SELECT COUNT(*) as count FROM users', (err, results) => {
+        resolve(err ? 0 : results[0].count);
+      });
+    });
+  
+    const getTotalPlants = new Promise((resolve) => {
+      db.query('SELECT COUNT(*) as count FROM plants', (err, results) => {
+        resolve(err ? 0 : results[0].count);
+      });
+    });
+  
+    const getTotalChats = new Promise((resolve) => {
+      db.query('SELECT COUNT(*) as count FROM chat_messages', (err, results) => {
+        resolve(err ? 0 : results[0].count);
+      });
+    });
+  
+    const getTotalVideos = new Promise((resolve) => {
+      fs.readdir('./uploads/', (err, files) => {
+        resolve(err ? 0 : files.length);
+      });
+    });
+  
+    // Execute all queries in parallel
+    Promise.all([
+      getTotalUsers,
+      getTotalPlants,
+      getTotalChats,
+      getTotalVideos
+    ]).then(([totalUsers, totalPlants, totalChats, totalVideos]) => {
+      const chartData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        data: [12, 19, 3, 5, 2, 3, 10]
+      };
+  
+      res.json({
+        totalUsers,
+        totalPlants,
+        totalChats,
+        totalVideos,
+        chartData
+      });
+    }).catch(error => {
+      console.error('Error fetching dashboard data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+  });
+  
+  // Get all users for admin
+  app.get('/admin/users', (req, res) => {
+    const query = 'SELECT id, user_name, email FROM users';
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ error: 'Internal server error' });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+  
+  // Delete user
+  app.delete('/admin/users/:id', (req, res) => {
+    const userId = req.params.id;
+    const query = 'DELETE FROM users WHERE id = ?';
+    
+    db.query(query, [userId], (err, result) => {
+      if (err) {
+        console.error('Error deleting user:', err);
+        res.status(500).json({ success: false, error: err });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  });
+  
+  // Delete plant
+  app.delete('/admin/plants/:id', (req, res) => {
+    const plantId = req.params.id;
+    const query = 'DELETE FROM plants WHERE id = ?';
+    
+    db.query(query, [plantId], (err, result) => {
+      if (err) {
+        console.error('Error deleting plant:', err);
+        res.status(500).json({ success: false, error: err });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  });
+  
+  // Delete chat message
+  app.delete('/admin/chats/:id', (req, res) => {
+    const chatId = req.params.id;
+    const query = 'DELETE FROM chat_messages WHERE id = ?';
+    
+    db.query(query, [chatId], (err, result) => {
+      if (err) {
+        console.error('Error deleting chat message:', err);
+        res.status(500).json({ success: false, error: err });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  });
+  
+  // Delete video
+  app.delete('/admin/videos', (req, res) => {
+    const { videoPath } = req.body;
+    const filename = videoPath.split('/').pop();
+    const filePath = path.join(__dirname, 'uploads', filename);
+  
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('Error deleting video:', err);
+        res.status(500).json({ success: false, error: err });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  });
+  
+  app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+  });
+
+
 
 // Start the server
 app.listen(3022, () => {
